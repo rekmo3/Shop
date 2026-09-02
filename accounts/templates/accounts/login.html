@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% block title %}Вхід{% endblock %}
+{% block content %}
+<div class="auth-card">
+    <h2>Вхід</h2>
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <label>{{ form.username.label }}</label>
+        {{ form.username }}
+        {{ form.username.errors }}
+        <label>{{ form.password.label }}</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+        <button type="submit" class="btn-auth">Увійти</button>
+    </form>
+</div>
+{% endblock %}

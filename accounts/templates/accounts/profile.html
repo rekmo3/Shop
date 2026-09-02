@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+{% load account_filters account_tags %}
+{% block title %}Профіль{% endblock %}
+{% block content %}
+<div class="profile-card">
+    <h2>Профіль користувача</h2>
+    <div class="profile-details">
+        <p><strong>Ім'я користувача:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Дата реєстрації:</strong> {{ user.date_joined|date:"d.m.Y H:i" }} ({% days_on_site user.date_joined %})</p>
+        <p><strong>Останній вхід:</strong> {{ user.last_login|date:"d.m.Y H:i" }}</p>
+        <p><strong>Роль:</strong> {{ user|user_role }}</p>
+    </div>
+    <a href="{% url 'main:product_list' %}">← До списку товарів</a>
+    <a href="{% url 'accounts:logout' %}" class="btn-danger">Вийти з акаунту</a>
+</div>
+{% endblock %}
