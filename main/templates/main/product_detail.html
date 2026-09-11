@@ -24,6 +24,13 @@
 
         <div class="product-info-block">
             <div class="product-price">{{ product.price }} грн</div>
+
+            <form action="{% url 'shop:cart_add' product.id %}" method="post" class="add-to-cart-form add-to-cart-form-detail">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="1" min="1" class="qty-input">
+                <button type="submit" class="btn-add-cart">🛒 Додати в кошик</button>
+            </form>
+
             <div class="product-description">
                 <h3>Опис товару:</h3>
                 <p>{{ product.description|linebreaks }}</p>

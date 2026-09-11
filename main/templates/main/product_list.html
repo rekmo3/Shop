@@ -37,6 +37,11 @@
                 <span class="views">{{ product.views }} переглядів</span>
                 <span class="btn-details">Детальніше</span>
             </a>
+            <form action="{% url 'shop:cart_add' product.id %}" method="post" class="add-to-cart-form">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="1" min="1" class="qty-input">
+                <button type="submit" class="btn-add-cart">🛒 В кошик</button>
+            </form>
         </div>
     {% endfor %}
 </div>

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #
     'main',
     'accounts',
+    'shop',
 ]
 
 MIDDLEWARE = [
@@ -65,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'shop.context_processors.cart',
             ],
         },
     },
@@ -124,12 +126,30 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+# Media files (user-uploaded content: avatars, product images)
+# MEDIA_ROOT = BASE_DIR keeps compatibility with the already-uploaded
+# product images that live directly in Shop/products/...
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR
+
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# (За бажанням) Реальна відправка через SMTP, наприклад Gmail:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your-email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'your-app-password'
+
+DEFAULT_FROM_EMAIL = 'noreply@shop.local'
+
+# Адреса, на яку форма зворотного зв'язку надсилає листи
+ADMIN_EMAIL = 'admin@shop.local'
+
+# Налаштування кошика покупця
+CART_SESSION_ID = 'cart'

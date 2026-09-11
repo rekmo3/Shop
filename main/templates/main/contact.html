@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="auth-card">
+    <h2>Зв'яжіться з нами</h2>
+    <p class="contact-intro">Маєте запитання, пропозицію чи скаргу? Заповніть форму нижче, і ми відповімо якнайшвидше.</p>
+
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {{ field.errors }}
+        {% endfor %}
+
+        <button type="submit" class="btn-auth">Надіслати</button>
+    </form>
+</div>
+{% endblock %}

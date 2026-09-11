@@ -1,34 +1,16 @@
-# Python
-__pycache__/
-*.py[cod]
-*.so
 
-# Virtual environment
 venv/
-.venv/
 env/
 ENV/
 
-# Django
-*.log
 db.sqlite3
-db.sqlite3-journal
 
-# Environment variables / secrets
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+
 .env
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Testing
-.coverage
-htmlcov/
-.pytest_cache/
-
-# Mypy
-.mypy_cache/
+*.log
+media/
+staticfiles/

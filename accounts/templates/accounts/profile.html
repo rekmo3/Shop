@@ -4,13 +4,25 @@
 {% block content %}
 <div class="profile-card">
     <h2>Профіль користувача</h2>
+
+    {% if user.profile.avatar %}
+        <img src="{{ user.profile.avatar.url }}" alt="Аватар" class="avatar-preview">
+    {% endif %}
+
     <div class="profile-details">
         <p><strong>Ім'я користувача:</strong> {{ user.username }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Ім'я:</strong> {{ user.first_name|default:"—" }}</p>
+        <p><strong>Прізвище:</strong> {{ user.last_name|default:"—" }}</p>
+        <p><strong>Email:</strong> {{ user.email|default:"—" }}</p>
+        <p><strong>Про себе:</strong> {{ user.profile.bio|default:"—" }}</p>
+        <p><strong>Дата народження:</strong> {{ user.profile.birth_date|date:"d.m.Y"|default:"—" }}</p>
+        <p><strong>Місто:</strong> {{ user.profile.location|default:"—" }}</p>
+        <p><strong>Веб-сайт:</strong> {{ user.profile.website|default:"—" }}</p>
         <p><strong>Дата реєстрації:</strong> {{ user.date_joined|date:"d.m.Y H:i" }} ({% days_on_site user.date_joined %})</p>
         <p><strong>Останній вхід:</strong> {{ user.last_login|date:"d.m.Y H:i" }}</p>
         <p><strong>Роль:</strong> {{ user|user_role }}</p>
     </div>
+    <a href="{% url 'accounts:profile_edit' %}" class="btn-auth">Редагувати профіль</a>
     <a href="{% url 'main:product_list' %}">← До списку товарів</a>
     <a href="{% url 'accounts:logout' %}" class="btn-danger">Вийти з акаунту</a>
 </div>
