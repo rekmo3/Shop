@@ -1,0 +1,71 @@
+{% extends 'main/base.html' %}
+{% block title %}Кошик — Інтернет-магазин{% endblock %}
+{% block content %}
+
+<h1 class="page-title">Кошик покупок</h1>
+
+{% if cart|length > 0 %}
+<table class="cart-table">
+    <thead>
+        <tr>
+            <th>Зображення</th>
+            <th>Назва</th>
+            <th>Кількість</th>
+            <th>Ціна за од.</th>
+            <th>Разом</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart %}
+        <tr>
+            <td class="cart-img-cell">
+                <a href="{{ item.product.get_absolute_url }}">
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    {% else %}
+                        <div class="no-image cart-no-image">Немає фото</div>
+                    {% endif %}
+                </a>
+            </td>
+            <td class="cart-name-cell">
+                <a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a>
+            </td>
+            <td>
+                <form action="{% url 'shop:cart_add' item.product.id %}" method="post" class="qty-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="override_quantity" value="True">
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="qty-input">
+                    <button type="submit" class="btn-update">Оновити</button>
+                </form>
+            </td>
+            <td>{{ item.price }} грн</td>
+            <td class="cart-line-total">{{ item.total_price }} грн</td>
+            <td>
+                <a href="{% url 'shop:cart_remove' item.product.id %}" class="btn-remove" title="Видалити товар">&times;</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="cart-total-label">Загальна сума:</td>
+            <td class="cart-total-value">{{ cart.get_total_price }} грн</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
+<div class="cart-actions">
+    <a href="{% url 'main:product_list' %}" class="btn-back">← Продовжити покупки</a>
+    <a href="#" class="btn-checkout">Оформити замовлення →</a>
+</div>
+
+{% else %}
+<div class="cart-empty">
+    <p>Кошик порожній</p>
+    <a href="{% url 'main:product_list' %}" class="btn-details">До каталогу товарів</a>
+</div>
+{% endif %}
+
+{% endblock %}

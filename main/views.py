@@ -1,9 +1,10 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.db.models import F
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import Product, Category
+from .forms import ContactForm
 
 
 def product_list(request, category_slug=None):
@@ -60,3 +61,45 @@ def product_detail(request, id, slug):
         "related_products": related_products,
     }
     return render(request, "main/product_detail.html", context)
+
+
+def contact_view(request):
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+
+            full_subject = f"[Магазин] {subject}"
+            full_message = (
+                f"Нове повідомлення з форми зворотного зв'язку.\n\n"
+                f"Ім'я: {name}\n"
+                f"Email: {email}\n\n"
+                f"Повідомлення:\n{message}"
+            )
+
+            try:
+                send_mail(
+                    full_subject,
+                    full_message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [settings.ADMIN_EMAIL],
+                    fail_silently=False,
+                )
+                messages.success(request, "Ваше повідомлення успішно надіслано! Ми зв'яжемося з вами найближчим часом.")
+                return redirect('main:contact')
+            except Exception:
+                messages.error(request, "На жаль, під час надсилання повідомлення сталася помилка. Спробуйте ще раз пізніше.")
+    else:
+        form = ContactForm()
+
+    context = {
+        "title": "Контакти",
+        "categories": categories,
+        "form": form,
+    }
+    return render(request, "main/contact.html", context)

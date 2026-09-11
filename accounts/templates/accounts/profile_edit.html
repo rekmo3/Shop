@@ -1,0 +1,63 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="auth-card profile-edit-card">
+    <h2>Редагування профілю</h2>
+
+    <form method="POST" class="auth-form" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if user_form.non_field_errors or profile_form.non_field_errors %}
+            {{ user_form.non_field_errors }}
+            {{ profile_form.non_field_errors }}
+        {% endif %}
+
+        {% if profile_form.avatar.value %}
+            <div class="current-avatar">
+                <img src="{{ profile_form.avatar.value.url }}" alt="Поточний аватар" class="avatar-preview">
+            </div>
+        {% endif %}
+
+        <h3>Основна інформація</h3>
+
+        <label for="{{ user_form.first_name.id_for_label }}">{{ user_form.first_name.label }}</label>
+        {{ user_form.first_name }}
+        {{ user_form.first_name.errors }}
+
+        <label for="{{ user_form.last_name.id_for_label }}">{{ user_form.last_name.label }}</label>
+        {{ user_form.last_name }}
+        {{ user_form.last_name.errors }}
+
+        <label for="{{ user_form.email.id_for_label }}">{{ user_form.email.label }}</label>
+        {{ user_form.email }}
+        {{ user_form.email.errors }}
+
+        <h3>Профіль</h3>
+
+        <label for="{{ profile_form.avatar.id_for_label }}">{{ profile_form.avatar.label }}</label>
+        {{ profile_form.avatar }}
+        {{ profile_form.avatar.errors }}
+
+        <label for="{{ profile_form.bio.id_for_label }}">{{ profile_form.bio.label }}</label>
+        {{ profile_form.bio }}
+        {{ profile_form.bio.errors }}
+
+        <label for="{{ profile_form.birth_date.id_for_label }}">{{ profile_form.birth_date.label }}</label>
+        {{ profile_form.birth_date }}
+        {{ profile_form.birth_date.errors }}
+
+        <label for="{{ profile_form.location.id_for_label }}">{{ profile_form.location.label }}</label>
+        {{ profile_form.location }}
+        {{ profile_form.location.errors }}
+
+        <label for="{{ profile_form.website.id_for_label }}">{{ profile_form.website.label }}</label>
+        {{ profile_form.website }}
+        {{ profile_form.website.errors }}
+
+        <div class="profile-edit-actions">
+            <button type="submit" class="btn-auth">Зберегти зміни</button>
+            <a href="{% url 'accounts:profile' %}" class="btn-cancel">Скасувати</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
